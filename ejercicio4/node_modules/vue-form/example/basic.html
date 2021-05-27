@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>vue-form example</title>
+  <meta charset="utf-8" />
+  <style>
+
+    .form-block {
+      display: block;
+      margin-bottom: 1.2rem;
+    }
+
+    .form-block > label {
+      display: block;
+      margin-bottom: .2rem;
+    }
+
+    .vf-invalid {
+      color: red;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div id="app">
+
+    <vue-form :state="formstate" @submit.prevent="onSubmit">
+
+        <validate auto-label class="form-block">
+            <label>Name *</label>
+            <input v-model="model.name" name="name" required />
+        </validate>
+
+        <validate auto-label class="form-block">
+            <label>Email *</label>
+            <input v-model="model.email" name="email" required />
+        </validate>
+
+        <validate auto-label class="form-block">
+            <label>Website address</label>
+            <input v-model="model.url" name="url" />
+        </validate>
+
+        <validate auto-label class="form-block">
+            <label>Phone number (xxx-xxxx-xxx)</label>
+            <input v-model="model.phone" name="phone" pattern="^\d{4}-\d{3}-\d{4}$" />
+        </validate>
+
+      <button type="submit">Submit</button>
+    </vue-form>
+
+    <pre>{{formstate}}</pre>
+
+  </div>
+
+  <script src="../node_modules/vue/dist/vue.js"></script>
+  <script src="../dist/vue-form.js"></script>
+  <script>
+
+    new Vue({
+      el: '#app',
+      mixins: [vueForm.mixin],
+      data: {
+        formstate: {},
+        model: {
+          name: '',
+          email: '',
+          phone: '',
+          url: ''
+        }
+      },
+      methods: {
+        onSubmit: function() {
+          console.log(this.formstate.$valid);
+        }
+      }
+    });
+  </script>
+
+</body>
+
+</html>
