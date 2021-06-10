@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>vue-form example</title>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+  <style>
+    .required-field>label::after {
+      content: '*';
+      color: red;
+      margin-left: 0.25rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app" class="container py-5">
+
+    <vue-form :state="formstate" v-model="formstate" @submit.prevent="onSubmit">
+
+      <validate :custom="{customValidator: atMostTwo}">
+        <template v-for="el in schools">
+          <input type="checkbox" name="check" v-model="data.check" :value="el" required>{{el.name}}<br />
+        </template>
+        <template v-if="formstate.check">
+          {{formstate.check.$valid}}
+        </template>
+      </validate>
+
+    </vue-form>
+
+    <pre>{{formstate}}</pre>
+
+  </div>
+
+      <script data-require="vue.js@2.3.3" data-semver="2.3.3" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.3/vue.js"></script>
+
+ <!-- <script src="../node_modules/vue/dist/vue.js"></script> -->
+  <script src="../dist/vue-form.js"></script>
+  <script>
+    var schools = [
+      { "id": 1, "name": "A" },
+      { "id": 2, "name": "B" },
+      { "id": 3, "name": "C" },
+      { "id": 4, "name": "D" }
+    ];
+
+    var options = {
+      inputClasses: {
+        valid: 'form-control-success',
+        invalid: 'form-control-danger'
+      }
+    }
+
+    var vm = new Vue({
+      el: '#app',
+      mixins: [new VueForm(options)],
+      data: {
+        schools: [],
+        formstate: {},
+        data: {
+          check: []
+        },
+        model: {
+          name: '',
+          email: '',
+          phone: '',
+          department: null,
+          comments: '',
+          notValidated: ''
+        }
+      },
+      methods: {
+        atMostTwo: function(value) {
+          return this.data.check.length <= 2
+        },
+        fieldClassName: function(field) {
+          if (!field) {
+            return '';
+          }
+          if ((field.$touched || field.$submitted) && field.$valid) {
+            return 'has-success';
+          }
+          if ((field.$touched || field.$submitted) && field.$invalid) {
+            return 'has-danger';
+          }
+        },
+        onSubmit: function() {
+          console.log(this.formstate.$valid);
+        }
+      },
+      created () {
+        console.log('created')
+        setTimeout(() => {
+          this.schools = schools
+        }, 2000)
+      }
+    });
+  </script>
+
+</body>
+
+</html>

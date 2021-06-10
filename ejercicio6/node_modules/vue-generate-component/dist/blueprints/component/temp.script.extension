@@ -1,0 +1,31 @@
+{% if filesType.script !== 'ts' %}
+export default {
+  name: '{{name | kebabCase}}',
+  components: {},
+  props: [],
+  data () {
+    return {
+
+    }
+  },
+  computed: {
+
+  },
+  mounted () {
+
+  },
+  methods: {
+
+  }
+}
+
+{% else %}
+import {Component, Vue} from "vue-property-decorator";
+
+@Component({
+  components: {}
+})
+export default class {{ name | PascalCase }} extends Vue {
+
+}
+{% endif %}
