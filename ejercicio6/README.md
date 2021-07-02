@@ -1,4 +1,4 @@
-# proyecto-tp4
+# proyecto-tp6
 
 ## Project setup
 ```
